@@ -9,8 +9,10 @@ function MovieList() {
 
     //making a route to add a new movie
     const pushAddMovie =() => {
-        history.pushState('/addmovie');
+        history.push('/addmovie');
     }
+
+    
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MOVIES' });

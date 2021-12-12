@@ -12,7 +12,7 @@ function AddMovie() {
       type: 'FETCH_GENRES'
     })
   }, []);
-}
+
 
 
 //functionality to route to a page
@@ -75,13 +75,13 @@ const addMovie = () => {
         return(<option key={genre.id} value={genre.id}>{genre.name}</option>);
       })}
       </select>
-      <button onClick={goHome}>Cancel</button>
+      <button onClick={homeScreen}>Cancel</button>
       <button onClick={addMovie}>Save</button>
     </div>
   )
 
 }
-
+}
 
 
 export default AddMovie;
