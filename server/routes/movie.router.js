@@ -33,9 +33,10 @@ router.post('/', (req, res) => {
 
     // Now handle the genre reference
     const insertMovieGenreQuery = `
-      INSERT INTO "movies_genres" ("movie_id", "genre_id", "description")
-      VALUES  ($1, $2, $3);
-      `
+      INSERT INTO "movies_genres" ("movie_id", "genre_id")
+      
+      VALUES  ($1, $2);
+      `;
       // SECOND QUERY ADDS GENRE FOR THAT NEW MOVIE
       pool.query(insertMovieGenreQuery, [createdMovieId, req.body.genre_id]).then(result => {
         //Now that both are done, send back success!

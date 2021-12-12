@@ -17,33 +17,31 @@ function AddMovie() {
 
 //functionality to route to a page
 const history = useHistory();
+//creates a dispatch to send to saga
+const dispatch = useDispatch();
 //creates a redux store instance for genres reducer
 const genres = useSelector(store => store.genres);
 // sets state and captures input data from a user
 const [title, setTitle] = useState('');
 const [poster, setPoster] = useState('');
 const [description, setDescription] = useState('');
-const [genre_id, setGenre_id] = useState('');
+const [genre_id, setGenre_id] = useState(0);
 
 //adds state data to an object and sends it to DB via POST
 const addMovie = () => {
-  if (title === '' || poster === '' || description === ''|| genre_id === ''){
-    alert('Please fill out all fields')
-  } else {
-    axios.post('api/movie', {
+  console.log(genre_id)
+  // if (!title === '' || !poster === '' || !description === ''|| !genre_id === ''){
+  //   alert('Please fill out all fields')
+  dispatch ({
+    type: 'ADD_MOVIE',
+    payload: {
       title: title,
       poster: poster,
       description: description,
       genre_id: genre_id
-    }).then((response) => {
-      console.log('information back from POST ROUTE', response);
-      //routing back to home page
-      history.push('/');
-    }).catch((error) => {
-      console.log('in POST ROUTE and there is an ERROR', error);
-    });
-  }
-
+    }
+  })
+}
   const homeScreen = () => {
     history.push('/');
   }
@@ -80,7 +78,6 @@ const addMovie = () => {
     </div>
   )
 
-}
 }
 
 
