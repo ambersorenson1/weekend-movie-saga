@@ -16,6 +16,19 @@ router.get('/', (req, res) => {
 
 });
 
+//get movie details including genres from DB based on id
+router.get('/details/:id', (req, res) => {
+  console.log('get details via ID', req.params.id);
+
+  let query = `SELECT movies.title, movies.poster, movies.description,;`;
+  pool.query(query, [req.params.id]).then( result => {
+    res.send(result.rows);
+  }).catch(err => {
+    console.log(err);
+    res.sendStatus(500);
+  })
+})
+
 router.post('/', (req, res) => {
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie
@@ -34,7 +47,7 @@ router.post('/', (req, res) => {
     // Now handle the genre reference
     const insertMovieGenreQuery = `
       INSERT INTO "movies_genres" ("movie_id", "genre_id")
-      
+
       VALUES  ($1, $2);
       `;
       // SECOND QUERY ADDS GENRE FOR THAT NEW MOVIE
