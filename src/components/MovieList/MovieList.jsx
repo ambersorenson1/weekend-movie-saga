@@ -7,12 +7,18 @@ function MovieList() {
     const dispatch = useDispatch();
     const movies = useSelector(store => store.movies);
 
+    //making a route to add a new movie
+    const pushAddMovie =() => {
+        history.pushState('/addmovie');
+    }
+
     useEffect(() => {
         dispatch({ type: 'FETCH_MOVIES' });
     }, []);
 
     return (
         <main>
+            <button id="addBtn" onClick={pushAddMovie}>Add a Movie</button>
             <h1>MovieList</h1>
             <section className="movies">
                 {movies.map(movie => {
