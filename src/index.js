@@ -16,7 +16,7 @@ function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
     yield takeEvery('ADD_MOVIE', addMovie );
     yield takeEvery('FETCH_GENRES', fetchAllGenres);
-    yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetail);
+    yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetails);
 }
 
 function* fetchAllMovies() {
@@ -48,7 +48,7 @@ function* fetchAllGenres() {
 
 function* addMovie(action){
     try {
-        yield axios.post('/api/movie', action.payload)
+        let addMovies = yield axios.post('/api/movie', action.payload)
         console.log('POST ROUTE', action.payload);
         yield put({ type: 'FETCH_MOVIES' });
 
@@ -58,7 +58,7 @@ function* addMovie(action){
 }
 
 
-function* fetchMovieDetail(action){
+function* fetchMovieDetails(action){
     try {
         const movieDetails = yield axios.get(`/api/movie/details/${action.payload}`)
         console.log('get movie details', movieDetails.data);
@@ -95,6 +95,15 @@ const genres = (state = [], action) => {
     }
 }
 
+const addMovies = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_ADD_MOVIE':
+            return action.payload;
+        default:
+            return state;
+    }
+} 
+
 
 const movieDetails = (state = [], action) => {
     switch (action.type) {
@@ -111,6 +120,8 @@ const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        addMovie,
+        movieDetails
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),

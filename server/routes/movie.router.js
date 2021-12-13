@@ -16,18 +16,29 @@ router.get('/', (req, res) => {
 
 });
 
-//get movie details including genres from DB based on id
+//get movie details including genres from DB based on id 
 router.get('/details/:id', (req, res) => {
-  console.log('get details via ID', req.params.id);
+  console.log("get details via id", req.params.id);
 
-  let query = `SELECT movies.title, movies.poster, movies.description,;`;
-  pool.query(query, [req.params.id]).then( result => {
-    res.send(result.rows);
-  }).catch(err => {
-    console.log(err);
-    res.sendStatus(500);
-  })
-})
+  const query = `SELECT movies.title, movies.poster, movies.description, 
+                ARRAY_AGG(genres.name) as genres FROM movies JOIN movies_genres 
+                ON movie_id = movies.id JOIN genres ON genres.id = genre_id 
+                WHERE movies.id=$1 GROUP BY movies.title, movies.poster, 
+                movies.description;`;
+  pool.query(query, [req.params.id])
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Get movie details', err);
+      res.sendStatus(500)
+    })
+
+});
+ 
+
+
+
 
 router.post('/', (req, res) => {
   console.log(req.body);
